@@ -1,14 +1,19 @@
 import { FileSystem, AccessError } from '@tmplr/core'
 import degit from 'degit'
 import { readFile, writeFile, access, mkdir, rm } from 'fs/promises'
-import { join, isAbsolute, dirname, relative, normalize } from 'path'
+import { join, isAbsolute, dirname, relative, normalize, resolve } from 'path'
 
 
 export class NodeFS implements FileSystem {
+  readonly root: string
+  readonly scope: string
+
   constructor(
-    readonly scope = process.cwd(),
-    readonly root = scope,
+    scope = process.cwd(),
+    root = scope,
   ) {
+    this.root = resolve(root)
+    this.scope = resolve(scope)
     this.checkSubPath(root)
   }
 

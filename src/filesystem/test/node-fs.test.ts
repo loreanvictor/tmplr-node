@@ -1,5 +1,6 @@
 import degit from 'degit'
 
+
 jest.mock('degit', () => {
   const clone = jest.fn(() => Promise.resolve())
 
@@ -10,7 +11,7 @@ jest.mock('degit', () => {
   }
 })
 
-import { join } from 'path'
+import { isAbsolute, join } from 'path'
 import { mkdir, rm, writeFile, readFile, access } from 'fs/promises'
 
 import { AccessError } from '@tmplr/core'
@@ -30,6 +31,13 @@ describe(NodeFS, () => {
     const fs = new NodeFS()
     expect(fs.scope).toBe(process.cwd())
     expect(fs.root).toBe(process.cwd())
+  })
+
+  test('its root and scope are absolute.', () => {
+    const fs = new NodeFS('tmp')
+
+    expect(isAbsolute(fs.scope)).toBe(true)
+    expect(isAbsolute(fs.root)).toBe(true)
   })
 
   describe('.read()', () => {
@@ -187,7 +195,7 @@ describe(NodeFS, () => {
         force: true
       })
 
-      expect(degit('').clone).toHaveBeenCalledWith('tmp/bar')
+      expect((degit('').clone as jest.Mock).mock.lastCall[0]).toMatch(/\/tmp\/bar$/)
     })
 
     test('cannot clone into a folder out of scope.', async () => {
