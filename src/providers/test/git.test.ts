@@ -13,7 +13,7 @@ describe(createGitProvider, () => {
     await expect(provider.get('remote_provider')()).resolves.toBe('github.com')
     await expect(provider.get('remote_owner')()).resolves.toBe('loreanvictor')
     await expect(provider.get('remote_name')()).resolves.toBe('tmplr-node')
-    await expect(provider.get('author_name')()).resolves.toBe('Eugene Ghanizadeh')
+    await expect(provider.get('author_name')()).resolves.toMatch(/Eugene Ghanizadeh/)
     await expect(provider.get('author_email')()).resolves.toBe('ghanizadeh.eugene@gmail.com')
   })
 
