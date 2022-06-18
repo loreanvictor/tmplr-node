@@ -1,11 +1,10 @@
 {
   "name": "@tmplr/node",
   "description": "Node.js bindings for tmplr",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",
-  "type": "module",
   "files": [
     "dist/commonjs",
     "dist/es"
@@ -49,7 +48,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@tmplr/core": "^0.2.1",
+    "@tmplr/core": "^0.2.2",
     "degit": "^2.8.4",
     "git-url-parse": "^11.6.0",
     "simple-git": "^3.7.1"
