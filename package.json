@@ -1,9 +1,16 @@
 {
   "name": "@tmplr/node",
   "description": "Node.js bindings for tmplr",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.1.0",
+  "main": "dist/commonjs/index.js",
+  "module": "dist/es/index.js",
+  "types": "dist/es/index.d.ts",
   "type": "module",
+  "files": [
+    "dist/commonjs",
+    "dist/es"
+  ],
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
@@ -37,6 +44,9 @@
     "ts-jest": "^28.0.4",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.3"
+  },
+  "engines": {
+    "node": ">=14.0.0"
   },
   "dependencies": {
     "@tmplr/core": "^0.2.1",
