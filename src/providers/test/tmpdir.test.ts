@@ -47,5 +47,7 @@ describe(createTmpDirProvider, () => {
     await provider2.cleanup()
 
     await expect(access(folder3)).rejects.toThrow()
+
+    await provider.cleanup()
   })
 })

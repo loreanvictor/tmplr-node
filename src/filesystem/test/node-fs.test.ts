@@ -180,6 +180,8 @@ describe(NodeFS, () => {
       const fs = new NodeFS('tmp')
       await fs.fetch('foo', 'bar')
 
+      await expect(access('tmp/bar')).resolves.not.toThrow()
+
       expect(degit).toHaveBeenCalledWith('foo', {
         cache: false,
         force: true

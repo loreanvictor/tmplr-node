@@ -74,7 +74,7 @@ export class NodeFS implements FileSystem {
     const dir = relative(this.root, abs)
 
     if (dir !== '.') {
-      await mkdir(dir, { recursive: true })
+      await mkdir(abs, { recursive: true })
     }
 
     const emitter = degit(remote, {
