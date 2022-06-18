@@ -1,4 +1,4 @@
-import { 
+import {
   NodeFS, createEnvProvider, createGitProvider, createTmpDirProvider
 } from '../index'
 
