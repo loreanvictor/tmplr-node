@@ -10,7 +10,6 @@ describe(createGitProvider, () => {
     const provider = createGitProvider(process.cwd())
 
     await expect(provider.has('remote_url')).resolves.toBe(true)
-    await expect(provider.get('remote_url')()).resolves.toBe('git@github.com:loreanvictor/tmplr-node.git')
     await expect(provider.get('remote_provider')()).resolves.toBe('github.com')
     await expect(provider.get('remote_owner')()).resolves.toBe('loreanvictor')
     await expect(provider.get('remote_name')()).resolves.toBe('tmplr-node')
