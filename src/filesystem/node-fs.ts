@@ -1,7 +1,7 @@
 import { FileSystem, AccessError } from '@tmplr/core'
 import degit from 'degit'
 import { readFile, writeFile, access, mkdir, rm } from 'fs/promises'
-import { join, isAbsolute, dirname, relative, normalize, resolve } from 'path'
+import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
 
 export class NodeFS implements FileSystem {
@@ -37,6 +37,14 @@ export class NodeFS implements FileSystem {
 
   absolute(path: string) {
     return normalize(isAbsolute(path) ? path : join(this.root, path))
+  }
+
+  dirname(path: string): string {
+    return dirname(this.absolute(path))
+  }
+
+  basename(path: string): string {
+    return basename(path)
   }
 
   async read(path: string) {

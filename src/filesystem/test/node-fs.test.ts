@@ -205,4 +205,18 @@ describe(NodeFS, () => {
       await expect(fs.fetch('foo', '../')).rejects.toThrow(AccessError)
     })
   })
+
+  describe('dirname()', () => {
+    test('returns the absolute dirname of a path.', () => {
+      const fs = new NodeFS('tmp')
+      expect(fs.dirname('foo/bar/baz.txt')).toMatch(/\/tmp\/foo\/bar$/)
+    })
+  })
+
+  describe('basename()', () => {
+    test('returns the basename of a given path.', () => {
+      const fs = new NodeFS('tmp')
+      expect(fs.basename('foo/bar/')).toBe('bar')
+    })
+  })
 })
