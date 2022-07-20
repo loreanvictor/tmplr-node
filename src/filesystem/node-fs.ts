@@ -31,7 +31,7 @@ export class NodeFS implements FileSystem {
     const dir = dirname(rel)
 
     if (dir !== '.') {
-      await mkdir(dir, { recursive: true })
+      await mkdir(this.absolute(dir), { recursive: true })
     }
   }
 

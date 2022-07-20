@@ -99,9 +99,9 @@ describe(NodeFS, () => {
   describe('.write()', () => {
     test('can write files based on given root / scope.', async () => {
       const fs = new NodeFS('tmp')
-      await fs.write('foo.txt', 'foo')
+      await fs.write('bar/foo.txt', 'foo')
 
-      await expect(readFile('tmp/foo.txt', 'utf8')).resolves.toBe('foo')
+      await expect(readFile('tmp/bar/foo.txt', 'utf8')).resolves.toBe('foo')
     })
 
     test('can not write files outside of its scope.', async () => {
