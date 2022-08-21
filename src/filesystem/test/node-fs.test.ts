@@ -20,11 +20,12 @@ import { NodeFS } from '../node-fs'
 
 describe(NodeFS, () => {
   beforeEach(async () => {
+    await rm('tmp', { recursive: true, force: true })
     await mkdir('tmp')
   })
 
   afterEach(async () => {
-    await rm('tmp', { recursive: true })
+    await rm('tmp', { recursive: true, force: true })
   })
 
   test('by default will assume process.cwd() as its scope and root.', () => {
@@ -217,6 +218,22 @@ describe(NodeFS, () => {
     test('returns the basename of a given path.', () => {
       const fs = new NodeFS('tmp')
       expect(fs.basename('foo/bar/')).toBe('bar')
+    })
+  })
+
+  describe('ls()', () => {
+    test('returns an array of all files in given directory (including subfiles).', async () => {
+      await access('tmp')
+      await mkdir('tmp/foo')
+      await mkdir('tmp/foo/bar')
+      await writeFile('tmp/baz.txt', 'baz')
+      await writeFile('tmp/foo/baz.txt', 'baz')
+      await writeFile('tmp/foo/bar/baz.txt', 'baz')
+
+      const fs = new NodeFS('tmp')
+      const files = await fs.ls('.')
+
+      expect(files).toEqual(['baz.txt', 'foo/baz.txt', 'foo/bar/baz.txt'])
     })
   })
 })

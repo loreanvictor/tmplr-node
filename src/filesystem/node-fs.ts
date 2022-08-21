@@ -1,6 +1,6 @@
 import { FileSystem, AccessError } from '@tmplr/core'
 import degit from 'degit'
-import { readFile, writeFile, access, mkdir, rm } from 'fs/promises'
+import { readFile, writeFile, access, mkdir, rm, readdir, stat } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
 
@@ -72,6 +72,24 @@ export class NodeFS implements FileSystem {
     const abs = this.absolute(path)
     this.checkSubPath(abs)
     await rm(abs, { recursive: true, force: true })
+  }
+
+  async ls(path: string) {
+    const abs = this.absolute(path)
+    this.checkSubPath(abs)
+
+    const paths: string[] = []
+    await Promise.all(
+      (await readdir(abs)).map(async (name) => {
+        if ((await stat(join(abs, name))).isDirectory()) {
+          paths.push(...(await this.ls(join(abs, name))).map(p => join(name, p)))
+        } else {
+          paths.push(name)
+        }
+      })
+    )
+
+    return paths
   }
 
   cd(path: string): FileSystem {
