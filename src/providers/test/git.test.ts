@@ -2,6 +2,7 @@ import { mkdtemp } from 'fs/promises'
 import { join } from 'path'
 import { tmpdir } from 'os'
 
+import { GitInstance } from '../git/instance'
 import { createGitProvider } from '../git'
 
 
@@ -22,5 +23,15 @@ describe(createGitProvider, () => {
 
     await expect(provider.has('remote_url')).resolves.toBe(false)
     await expect(provider.get('remote_url')()).rejects.toThrow()
+  })
+
+  test('gracefully handles the situation where there are no commits.', async () => {
+    jest.spyOn(GitInstance.prototype, 'initialCommit').mockRejectedValue(new Error('no commits'))
+    const provider = createGitProvider(process.cwd())
+
+    await expect(provider.get('author_name')()).resolves.not.toThrow()
+    await expect(provider.get('author_email')()).resolves.not.toThrow()
+
+    jest.spyOn(GitInstance.prototype, 'initialCommit').mockRestore()
   })
 })
