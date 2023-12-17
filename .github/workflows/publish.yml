@@ -6,7 +6,12 @@ on:
 jobs:
   test:
     uses: ./.github/workflows/test.yml
+  coverage:
+    uses: ./.github/workflows/coverage.yml
   run:
+    needs:
+      - test
+      - coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
