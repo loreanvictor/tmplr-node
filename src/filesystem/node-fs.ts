@@ -3,6 +3,8 @@ import degit from 'degit'
 import { readFile, writeFile, access, mkdir, rm, readdir, stat } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
+import { slash } from './slash'
+
 
 export class NodeFS implements FileSystem {
   readonly root: string
@@ -12,8 +14,8 @@ export class NodeFS implements FileSystem {
     scope = process.cwd(),
     root = scope,
   ) {
-    this.root = resolve(root)
-    this.scope = resolve(scope)
+    this.root = slash(resolve(root))
+    this.scope = slash(resolve(scope))
     this.checkSubPath(root)
   }
 
@@ -36,15 +38,15 @@ export class NodeFS implements FileSystem {
   }
 
   absolute(path: string) {
-    return normalize(isAbsolute(path) ? path : join(this.root, path))
+    return slash(normalize(isAbsolute(path) ? path : join(this.root, path)))
   }
 
   dirname(path: string): string {
-    return dirname(this.absolute(path))
+    return slash(dirname(this.absolute(path)))
   }
 
   basename(path: string): string {
-    return basename(path)
+    return slash(basename(path))
   }
 
   async read(path: string) {
@@ -89,7 +91,7 @@ export class NodeFS implements FileSystem {
       })
     )
 
-    return paths
+    return paths.map(slash)
   }
 
   cd(path: string): FileSystem {
