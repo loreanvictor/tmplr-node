@@ -16,6 +16,7 @@ import { mkdir, rm, writeFile, readFile, access } from 'fs/promises'
 
 import { AccessError } from '@tmplr/core'
 import { NodeFS } from '../node-fs'
+import { slash } from '../slash'
 
 
 describe(NodeFS, () => {
@@ -30,8 +31,8 @@ describe(NodeFS, () => {
 
   test('by default will assume process.cwd() as its scope and root.', () => {
     const fs = new NodeFS()
-    expect(fs.scope).toBe(process.cwd())
-    expect(fs.root).toBe(process.cwd())
+    expect(fs.scope).toBe(slash(process.cwd()))
+    expect(fs.root).toBe(slash(process.cwd()))
   })
 
   test('its root and scope are absolute.', () => {
