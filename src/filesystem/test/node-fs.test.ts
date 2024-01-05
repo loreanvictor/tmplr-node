@@ -206,6 +206,22 @@ describe(NodeFS, () => {
       const fs = new NodeFS('tmp/foo')
       await expect(fs.fetch('foo', '../')).rejects.toThrow(AccessError)
     })
+
+    test('can fetch locally.', async () => {
+      await mkdir('tmp/foo')
+      await writeFile('tmp/foo/bar.txt', 'bar')
+      await writeFile('tmp/foo/baz.txt', 'baz')
+
+      const fs = new NodeFS('tmp')
+      await fs.fetch('local:foo', 'qux')
+
+      await expect(access('tmp/qux')).resolves.not.toThrow()
+      await expect(access('tmp/qux/bar.txt')).resolves.not.toThrow()
+      await expect(access('tmp/qux/baz.txt')).resolves.not.toThrow()
+      await expect(access('tmp/qux/foo')).rejects.toThrow()
+      await expect(readFile('tmp/qux/bar.txt', 'utf8')).resolves.toBe('bar')
+      await expect(readFile('tmp/qux/baz.txt', 'utf8')).resolves.toBe('baz')
+    })
   })
 
   describe('dirname()', () => {

@@ -1,6 +1,6 @@
 import { FileSystem, AccessError } from '@tmplr/core'
 import degit from 'degit'
-import { readFile, writeFile, access, mkdir, rm, readdir, stat } from 'fs/promises'
+import { readFile, writeFile, access, mkdir, rm, readdir, stat, cp } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
 import { slash } from './slash'
@@ -110,11 +110,16 @@ export class NodeFS implements FileSystem {
       await mkdir(abs, { recursive: true })
     }
 
-    const emitter = degit(remote, {
-      cache: false,
-      force: true
-    })
+    if (remote.startsWith('local:')) {
+      const path = this.absolute(remote.slice(6))
+      await cp(path, abs, { recursive: true })
+    } else {
+      const emitter = degit(remote, {
+        cache: false,
+        force: true
+      })
 
-    await emitter.clone(abs)
+      await emitter.clone(abs)
+    }
   }
 }
