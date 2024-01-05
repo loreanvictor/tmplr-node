@@ -209,18 +209,21 @@ describe(NodeFS, () => {
 
     test('can fetch locally.', async () => {
       await mkdir('tmp/foo')
-      await writeFile('tmp/foo/bar.txt', 'bar')
+      await mkdir('tmp/bar')
       await writeFile('tmp/foo/baz.txt', 'baz')
+      await writeFile('tmp/foo/qux.txt', 'qux')
 
-      const fs = new NodeFS('tmp')
-      await fs.fetch('local:foo', 'qux')
+      const fs = new NodeFS('tmp/bar')
+      await fs.fetch('local:../foo', 'fred')
 
-      await expect(access('tmp/qux')).resolves.not.toThrow()
-      await expect(access('tmp/qux/bar.txt')).resolves.not.toThrow()
-      await expect(access('tmp/qux/baz.txt')).resolves.not.toThrow()
-      await expect(access('tmp/qux/foo')).rejects.toThrow()
-      await expect(readFile('tmp/qux/bar.txt', 'utf8')).resolves.toBe('bar')
-      await expect(readFile('tmp/qux/baz.txt', 'utf8')).resolves.toBe('baz')
+      await expect(access('tmp/bar/fred')).resolves.not.toThrow()
+      await expect(access('tmp/bar/fred/baz.txt')).resolves.not.toThrow()
+      await expect(access('tmp/bar/fred/qux.txt')).resolves.not.toThrow()
+      await expect(access('tmp/bar/foo')).rejects.toThrow()
+      await expect(readFile('tmp/bar/fred/baz.txt', 'utf8')).resolves.toBe('baz')
+      await expect(readFile('tmp/bar/fred/qux.txt', 'utf8')).resolves.toBe('qux')
+
+      await expect(fs.fetch('local:../foo', '../thud')).rejects.toThrow(AccessError)
     })
   })
 
