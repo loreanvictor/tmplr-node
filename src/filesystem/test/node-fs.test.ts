@@ -1,7 +1,7 @@
-import degit from 'degit'
+import tiged from 'tiged'
 
 
-jest.mock('degit', () => {
+jest.mock('tiged', () => {
   const clone = jest.fn(() => Promise.resolve())
 
   return {
@@ -192,12 +192,12 @@ describe(NodeFS, () => {
 
       await expect(access('tmp/bar')).resolves.not.toThrow()
 
-      expect(degit).toHaveBeenCalledWith('foo', {
+      expect(tiged).toHaveBeenCalledWith('foo', {
         cache: false,
         force: true
       })
 
-      expect((degit('').clone as jest.Mock).mock.lastCall[0]).toMatch(/\/tmp\/bar$/)
+      expect((tiged('').clone as jest.Mock).mock.lastCall[0]).toMatch(/\/tmp\/bar$/)
     })
 
     test('cannot clone into a folder out of scope.', async () => {

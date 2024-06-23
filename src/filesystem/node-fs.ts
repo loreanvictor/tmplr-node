@@ -1,5 +1,5 @@
 import { FileSystem, AccessError } from '@tmplr/core'
-import degit from 'degit'
+import tiged from 'tiged'
 import { readFile, writeFile, access, mkdir, rm, readdir, stat, cp } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
@@ -114,7 +114,7 @@ export class NodeFS implements FileSystem {
       const path = this.absolute(remote.slice(6))
       await cp(path, abs, { recursive: true })
     } else {
-      const emitter = degit(remote, {
+      const emitter = tiged(remote, {
         cache: false,
         force: true
       })

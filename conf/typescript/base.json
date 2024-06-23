@@ -3,9 +3,13 @@
   "compilerOptions": {
 		"moduleResolution": "node",
 		"module": "esnext",
-    "jsx": "react",
+        "jsx": "react",
 		"esModuleInterop": true,
-		"noImplicitAny": false
+		"noImplicitAny": false,
+        "typeRoots": [
+            "../../node_modules/@types",
+            "../../types"
+        ]
   },
   "include": ["../../src"],
 	"exclude": ["../../**/test/**/*"]
