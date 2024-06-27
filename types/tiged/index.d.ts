@@ -20,6 +20,22 @@ declare namespace tiged {
     /**
      * @default false
      */
+    offlineMode?: boolean | undefined;
+    /**
+     * @default false
+     */
+    disableCache?: boolean | undefined;
+    /**
+     * @default false
+     */
+    subgroup?: boolean | undefined;
+    /**
+     * @default undefined
+     */
+    'sub-directory'?: string | undefined;
+    /**
+     * @default false
+     */
     cache?: boolean | undefined;
     /**
      * @default false
@@ -33,6 +49,7 @@ declare namespace tiged {
      * @default false
      */
     verbose?: boolean | undefined;
+
   }
 
   // varia

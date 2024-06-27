@@ -193,6 +193,7 @@ describe(NodeFS, () => {
       await expect(access('tmp/bar')).resolves.not.toThrow()
 
       expect(tiged).toHaveBeenCalledWith('foo', {
+        subgroup: false,
         cache: false,
         force: true
       })

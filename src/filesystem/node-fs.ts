@@ -101,7 +101,7 @@ export class NodeFS implements FileSystem {
     return new NodeFS(this.scope, abs)
   }
 
-  async fetch(remote: string, dest: string) {
+  async fetch(remote: string, dest: string, subgroup = false) {
     const abs = this.absolute(dest)
     this.checkSubPath(abs)
     const dir = relative(this.root, abs)
@@ -115,6 +115,7 @@ export class NodeFS implements FileSystem {
       await cp(path, abs, { recursive: true })
     } else {
       const emitter = tiged(remote, {
+        subgroup,
         cache: false,
         force: true
       })
