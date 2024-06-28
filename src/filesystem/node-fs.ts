@@ -6,6 +6,10 @@ import { join, isAbsolute, dirname, relative, normalize, resolve, basename } fro
 import { slash } from './slash'
 
 
+export interface FetchOptions {
+  subgroup?: boolean
+}
+
 export class NodeFS implements FileSystem {
   readonly root: string
   readonly scope: string
@@ -101,7 +105,7 @@ export class NodeFS implements FileSystem {
     return new NodeFS(this.scope, abs)
   }
 
-  async fetch(remote: string, dest: string, subgroup = false) {
+  async fetch(remote: string, dest: string, options?: FetchOptions) {
     const abs = this.absolute(dest)
     this.checkSubPath(abs)
     const dir = relative(this.root, abs)
@@ -115,7 +119,7 @@ export class NodeFS implements FileSystem {
       await cp(path, abs, { recursive: true })
     } else {
       const emitter = tiged(remote, {
-        subgroup,
+        subgroup: options?.subgroup ?? false,
         cache: false,
         force: true
       })

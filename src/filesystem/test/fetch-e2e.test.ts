@@ -16,7 +16,7 @@ test('fetching works.', async () => {
 
 test('can fetch nested gitlab repositories', async () => {
   const fs = new NodeFS('e2e-tmp')
-  await fs.fetch('gitlab:skewed-aspect/test-repos/tmplr-test', 'example/gl', true)
+  await fs.fetch('gitlab:skewed-aspect/test-repos/tmplr-test', 'example/gl', { subgroup: true })
   await expect(fs.access('example/gl')).resolves.not.toThrow()
   await expect(fs.access('example/gl/README.md')).resolves.not.toThrow()
   await expect(fs.access('example/gl/baz.txt')).resolves.not.toThrow()
