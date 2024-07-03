@@ -1,10 +1,14 @@
 import { FileSystem, AccessError } from '@tmplr/core'
-import degit from 'degit'
+import tiged from 'tiged'
 import { readFile, writeFile, access, mkdir, rm, readdir, stat, cp } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
 import { slash } from './slash'
 
+
+export interface FetchOptions {
+  subgroup?: boolean
+}
 
 export class NodeFS implements FileSystem {
   readonly root: string
@@ -101,7 +105,7 @@ export class NodeFS implements FileSystem {
     return new NodeFS(this.scope, abs)
   }
 
-  async fetch(remote: string, dest: string) {
+  async fetch(remote: string, dest: string, options?: FetchOptions) {
     const abs = this.absolute(dest)
     this.checkSubPath(abs)
     const dir = relative(this.root, abs)
@@ -114,7 +118,8 @@ export class NodeFS implements FileSystem {
       const path = this.absolute(remote.slice(6))
       await cp(path, abs, { recursive: true })
     } else {
-      const emitter = degit(remote, {
+      const emitter = tiged(remote, {
+        subgroup: options?.subgroup ?? false,
         cache: false,
         force: true
       })
