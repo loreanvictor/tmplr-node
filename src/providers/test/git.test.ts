@@ -1,3 +1,4 @@
+import { execSync } from 'child_process'
 import { mkdtemp } from 'fs/promises'
 import { join } from 'path'
 import { tmpdir } from 'os'
@@ -8,7 +9,11 @@ import { createGitProvider } from '../git'
 
 describe(createGitProvider, () => {
   test('resolves proper git values.', async () => {
-    const provider = createGitProvider(process.cwd())
+    const tempDir = await mkdtemp(join(tmpdir(), 'tmplr-test-'));
+
+    execSync('git clone https://github.com/loreanvictor/tmplr-node.git', { cwd: tempDir })
+
+    const provider = createGitProvider(join(tempDir, 'tmplr-node'))
 
     await expect(provider.has('remote_url')).resolves.toBe(true)
     await expect(provider.get('remote_provider')()).resolves.toBe('github.com')
