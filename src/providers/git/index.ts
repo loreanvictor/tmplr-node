@@ -15,6 +15,8 @@ export function createGitProvider(scope: string) {
   const instance = new GitInstance(scope)
 
   const valid = cached(async () => instance.valid())
+  const hasRemote = cached(async () => instance.hasRemote())
+  const hasCommits = cached(async () => instance.hasCommits())
   const remoteDetailsCached = cached(safe(async () => instance.remoteDetails()))
   const initialCommitCached = cached(safe(async () => instance.initialCommit()))
 
@@ -29,6 +31,12 @@ export function createGitProvider(scope: string) {
 
   return {
     ...provider,
-    has: async (key: string) => (await valid()) && (await provider.has(key))
+    has: async (key: string) => {
+      if (key.startsWith('remote_')) {
+        return (await valid()) && (await hasRemote()) && (await provider.has(key))
+      } else {
+        return (await valid()) && (await hasCommits()) && (await provider.has(key))
+      }
+    }
   }
 }

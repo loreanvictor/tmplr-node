@@ -21,6 +21,26 @@ export class GitInstance {
     }
   }
 
+  async hasRemote() {
+    try {
+      await this.git.raw('remote', 'get-url', 'origin')
+
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  async hasCommits() {
+    try {
+      await this.git.raw('rev-list', '--max-parents=0', 'HEAD')
+
+      return true
+    } catch {
+      return false
+    }
+  }
+
   async initialCommit() {
     const hash = await this.git.raw('rev-list', '--max-parents=0', 'HEAD')
     const commits = await this.git.log(['-1', hash.trim()])
