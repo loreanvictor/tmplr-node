@@ -1,14 +1,10 @@
-import { FileSystem, AccessError } from '@tmplr/core'
+import { FileSystem, AccessError, FetchOptions } from '@tmplr/core'
 import tiged from 'tiged'
 import { readFile, writeFile, access, mkdir, rm, readdir, stat, cp } from 'fs/promises'
 import { join, isAbsolute, dirname, relative, normalize, resolve, basename } from 'path'
 
 import { slash } from './slash'
 
-
-export interface FetchOptions {
-  subgroup?: boolean
-}
 
 export class NodeFS implements FileSystem {
   readonly root: string

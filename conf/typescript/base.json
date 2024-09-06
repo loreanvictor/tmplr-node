@@ -1,16 +1,16 @@
 {
   "extends": "@sindresorhus/tsconfig",
   "compilerOptions": {
-		"moduleResolution": "node",
-		"module": "esnext",
-        "jsx": "react",
-		"esModuleInterop": true,
-		"noImplicitAny": false,
-        "typeRoots": [
-            "../../node_modules/@types",
-            "../../types"
-        ]
+    "moduleResolution": "node",
+    "module": "esnext",
+    "jsx": "react",
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../types"
+    ]
   },
   "include": ["../../src"],
-	"exclude": ["../../**/test/**/*"]
+  "exclude": ["../../**/test/**/*"]
 }

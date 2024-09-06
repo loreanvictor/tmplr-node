@@ -9,7 +9,7 @@ import { createGitProvider } from '../git'
 
 describe(createGitProvider, () => {
   test('resolves proper git values.', async () => {
-    const tempDir = await mkdtemp(join(tmpdir(), 'tmplr-test-'));
+    const tempDir = await mkdtemp(join(tmpdir(), 'tmplr-test-'))
 
     execSync('git clone https://github.com/loreanvictor/tmplr-node.git', { cwd: tempDir })
 
