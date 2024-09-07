@@ -3,7 +3,7 @@
 import { FlowEnv } from '@tmplr/core'
 
 const EVENTS = [
-  'exit',
+  'beforeExit',
   'SIGINT',
   'SIGTERM',
   'SIGHUP',
@@ -13,31 +13,20 @@ const EVENTS = [
   'unhandledRejection',
 ]
 
-const onkill = handler => EVENTS.forEach(event => process.on(event, handler))
-const offkill = handler => EVENTS.forEach(event => process.off(event, handler))
+const handlers: (() => Promise<void>)[] = []
 
-const finalise = () => process.exit()
-onkill(finalise)
+EVENTS.forEach(event => process.on(event, async () => {
+  for (const handler of handlers) {
+    await handler()
+  }
+
+  process.exit()
+}))
 
 export const NODE_ENV: FlowEnv = {
   onKill: (handler) => {
-    // FIXME: Why do we need this?
-    //       the issue stems from the fact that `offkill(wrapper)`
-    //       for some reason will remove all handlers (or something like that).
-    let skipped = false
+    handlers.push(handler)
 
-    const wrapper = async () => {
-      offkill(wrapper)
-
-      if (!skipped) {
-        await handler()
-      }
-    }
-
-    offkill(finalise)
-    onkill(wrapper)
-    onkill(finalise)
-
-    return () => skipped = true
+    return () => handlers.splice(handlers.indexOf(handler), 1)
   }
 }

@@ -16,9 +16,14 @@
 import { NODE_ENV } from '../index.ts'
 
 
-setInterval(() => {}, 1000)
-NODE_ENV.onKill(async () => console.log('Alice'))
+const i = setInterval(() => {}, 1000)
+NODE_ENV.onKill(() => new Promise(resolve => {
+  setTimeout(() => {
+    console.log('Alice')
+    resolve()
+  }, 100)
+}))
 const r = NODE_ENV.onKill(async () => console.log('Bob'))
 
 setTimeout(() => r(), 2000)
-setTimeout(() => process.exit(), 5000)
+setTimeout(() => clearInterval(i), 5000)
