@@ -1,7 +1,7 @@
 {
   "name": "@tmplr/node",
   "description": "Node.js bindings for tmplr",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "dist/commonjs/index.js",
   "module": "dist/es/index.js",
   "types": "dist/es/index.d.ts",
@@ -12,6 +12,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "jest",
+    "test:env": "bun ./src/env/test/script.js",
     "coverage": "jest --coverage",
     "build-commonjs": "tsc -p conf/typescript/commonjs.json",
     "build-es": "tsc -p conf/typescript/es.json",
